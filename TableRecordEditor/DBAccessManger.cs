@@ -233,13 +233,13 @@ WHERE  object_id =
             // カラム一覧の取得
             foreach (DataColumn col in updateRow.Table.Columns)
             {
-                setSql += string.Format("{0}={1}, ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Current]);
-                whereSql += string.Format("{0}={1} AND ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Original]);
+                setSql += string.Format("{0}='{1}', ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Current]);
+                whereSql += string.Format("{0}='{1}' AND ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Original]);
             }
 
             // 末尾のカンマとANDを除外
-            setSql = setSql.Remove(0, setSql.Length - 2);
-            whereSql = whereSql.Remove(0, setSql.Length - 4);
+            setSql = setSql.Remove(setSql.Length - 2, 2);
+            whereSql = whereSql.Remove(whereSql.Length - 4, 4);
             sqlBuilder.AppendFormat("UPDATE {0} SET {1} WHERE {2}", tableName, setSql, whereSql);
 
             // SQL設定
