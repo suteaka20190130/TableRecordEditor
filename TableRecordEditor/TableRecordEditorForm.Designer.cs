@@ -33,38 +33,26 @@
             this.label2 = new System.Windows.Forms.Label();
             this.selectTableList = new System.Windows.Forms.ListBox();
             this.searchConditionGridView = new System.Windows.Forms.DataGridView();
-            this.empolyeeIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sexDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.departmentIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastUpdateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastUpdateUserDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.optimistDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.列1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.列2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.列3DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.列4DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sampleDataSet = new System.Data.DataSet();
             this.dataTable1 = new System.Data.DataTable();
+            this.dataColumn8 = new System.Data.DataColumn();
             this.dataColumn1 = new System.Data.DataColumn();
             this.dataColumn2 = new System.Data.DataColumn();
             this.dataColumn3 = new System.Data.DataColumn();
-            this.dataColumn4 = new System.Data.DataColumn();
-            this.dataColumn5 = new System.Data.DataColumn();
-            this.dataColumn6 = new System.Data.DataColumn();
-            this.dataColumn7 = new System.Data.DataColumn();
-            this.dataColumn8 = new System.Data.DataColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.editTableRecordGridView = new System.Windows.Forms.DataGridView();
-            this.empolyeeIDDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sexDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ageDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.departmentIDDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastUpdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastUpdateUserDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.optimistDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.列1DataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.列2DataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.列3DataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.列4DataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.commitDB = new System.Windows.Forms.Button();
+            this.createRowButton = new System.Windows.Forms.Button();
+            this.deleteRowButton = new System.Windows.Forms.Button();
+            this.searchButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.searchConditionGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sampleDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable1)).BeginInit();
@@ -123,7 +111,6 @@
             this.selectTableList.Size = new System.Drawing.Size(174, 302);
             this.selectTableList.TabIndex = 0;
             this.selectTableList.SelectedIndexChanged += new System.EventHandler(this.SelectTableList_SelectedIndexChanged);
-            this.selectTableList.SelectedValueChanged += new System.EventHandler(this.SelectTableList_SelectedValueChanged);
             // 
             // searchConditionGridView
             // 
@@ -135,15 +122,11 @@
             this.searchConditionGridView.AutoGenerateColumns = false;
             this.searchConditionGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.searchConditionGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.empolyeeIDDataGridViewTextBoxColumn,
-            this.nameDataGridViewTextBoxColumn,
-            this.sexDataGridViewTextBoxColumn,
-            this.ageDataGridViewTextBoxColumn,
-            this.departmentIDDataGridViewTextBoxColumn,
-            this.lastUpdateDataGridViewTextBoxColumn1,
-            this.lastUpdateUserDataGridViewTextBoxColumn1,
-            this.optimistDataGridViewTextBoxColumn1});
-            this.searchConditionGridView.DataMember = "Empolyee";
+            this.列1DataGridViewTextBoxColumn,
+            this.列2DataGridViewTextBoxColumn,
+            this.列3DataGridViewTextBoxColumn,
+            this.列4DataGridViewTextBoxColumn});
+            this.searchConditionGridView.DataMember = "SampleTable";
             this.searchConditionGridView.DataSource = this.sampleDataSet;
             this.searchConditionGridView.Location = new System.Drawing.Point(6, 18);
             this.searchConditionGridView.Name = "searchConditionGridView";
@@ -152,53 +135,29 @@
             this.searchConditionGridView.Size = new System.Drawing.Size(620, 83);
             this.searchConditionGridView.TabIndex = 2;
             // 
-            // empolyeeIDDataGridViewTextBoxColumn
+            // 列1DataGridViewTextBoxColumn
             // 
-            this.empolyeeIDDataGridViewTextBoxColumn.DataPropertyName = "EmpolyeeID";
-            this.empolyeeIDDataGridViewTextBoxColumn.HeaderText = "EmpolyeeID";
-            this.empolyeeIDDataGridViewTextBoxColumn.Name = "empolyeeIDDataGridViewTextBoxColumn";
+            this.列1DataGridViewTextBoxColumn.DataPropertyName = "列1";
+            this.列1DataGridViewTextBoxColumn.HeaderText = "列1";
+            this.列1DataGridViewTextBoxColumn.Name = "列1DataGridViewTextBoxColumn";
             // 
-            // nameDataGridViewTextBoxColumn
+            // 列2DataGridViewTextBoxColumn
             // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.列2DataGridViewTextBoxColumn.DataPropertyName = "列2";
+            this.列2DataGridViewTextBoxColumn.HeaderText = "列2";
+            this.列2DataGridViewTextBoxColumn.Name = "列2DataGridViewTextBoxColumn";
             // 
-            // sexDataGridViewTextBoxColumn
+            // 列3DataGridViewTextBoxColumn
             // 
-            this.sexDataGridViewTextBoxColumn.DataPropertyName = "Sex";
-            this.sexDataGridViewTextBoxColumn.HeaderText = "Sex";
-            this.sexDataGridViewTextBoxColumn.Name = "sexDataGridViewTextBoxColumn";
+            this.列3DataGridViewTextBoxColumn.DataPropertyName = "列3";
+            this.列3DataGridViewTextBoxColumn.HeaderText = "列3";
+            this.列3DataGridViewTextBoxColumn.Name = "列3DataGridViewTextBoxColumn";
             // 
-            // ageDataGridViewTextBoxColumn
+            // 列4DataGridViewTextBoxColumn
             // 
-            this.ageDataGridViewTextBoxColumn.DataPropertyName = "Age";
-            this.ageDataGridViewTextBoxColumn.HeaderText = "Age";
-            this.ageDataGridViewTextBoxColumn.Name = "ageDataGridViewTextBoxColumn";
-            // 
-            // departmentIDDataGridViewTextBoxColumn
-            // 
-            this.departmentIDDataGridViewTextBoxColumn.DataPropertyName = "DepartmentID";
-            this.departmentIDDataGridViewTextBoxColumn.HeaderText = "DepartmentID";
-            this.departmentIDDataGridViewTextBoxColumn.Name = "departmentIDDataGridViewTextBoxColumn";
-            // 
-            // lastUpdateDataGridViewTextBoxColumn1
-            // 
-            this.lastUpdateDataGridViewTextBoxColumn1.DataPropertyName = "LastUpdate";
-            this.lastUpdateDataGridViewTextBoxColumn1.HeaderText = "LastUpdate";
-            this.lastUpdateDataGridViewTextBoxColumn1.Name = "lastUpdateDataGridViewTextBoxColumn1";
-            // 
-            // lastUpdateUserDataGridViewTextBoxColumn1
-            // 
-            this.lastUpdateUserDataGridViewTextBoxColumn1.DataPropertyName = "LastUpdateUser";
-            this.lastUpdateUserDataGridViewTextBoxColumn1.HeaderText = "LastUpdateUser";
-            this.lastUpdateUserDataGridViewTextBoxColumn1.Name = "lastUpdateUserDataGridViewTextBoxColumn1";
-            // 
-            // optimistDataGridViewTextBoxColumn1
-            // 
-            this.optimistDataGridViewTextBoxColumn1.DataPropertyName = "Optimist";
-            this.optimistDataGridViewTextBoxColumn1.HeaderText = "Optimist";
-            this.optimistDataGridViewTextBoxColumn1.Name = "optimistDataGridViewTextBoxColumn1";
+            this.列4DataGridViewTextBoxColumn.DataPropertyName = "列4";
+            this.列4DataGridViewTextBoxColumn.HeaderText = "列4";
+            this.列4DataGridViewTextBoxColumn.Name = "列4DataGridViewTextBoxColumn";
             // 
             // sampleDataSet
             // 
@@ -209,53 +168,28 @@
             // dataTable1
             // 
             this.dataTable1.Columns.AddRange(new System.Data.DataColumn[] {
+            this.dataColumn8,
             this.dataColumn1,
             this.dataColumn2,
-            this.dataColumn3,
-            this.dataColumn4,
-            this.dataColumn5,
-            this.dataColumn6,
-            this.dataColumn7,
-            this.dataColumn8});
-            this.dataTable1.TableName = "Empolyee";
-            // 
-            // dataColumn1
-            // 
-            this.dataColumn1.Caption = "EmpolyeeID";
-            this.dataColumn1.ColumnName = "EmpolyeeID";
-            // 
-            // dataColumn2
-            // 
-            this.dataColumn2.Caption = "Name";
-            this.dataColumn2.ColumnName = "Name";
-            // 
-            // dataColumn3
-            // 
-            this.dataColumn3.Caption = "Sex";
-            this.dataColumn3.ColumnName = "Sex";
-            // 
-            // dataColumn4
-            // 
-            this.dataColumn4.Caption = "Age";
-            this.dataColumn4.ColumnName = "Age";
-            // 
-            // dataColumn5
-            // 
-            this.dataColumn5.Caption = "DepartmentID";
-            this.dataColumn5.ColumnName = "DepartmentID";
-            // 
-            // dataColumn6
-            // 
-            this.dataColumn6.ColumnName = "LastUpdate";
-            // 
-            // dataColumn7
-            // 
-            this.dataColumn7.ColumnName = "LastUpdateUser";
+            this.dataColumn3});
+            this.dataTable1.TableName = "SampleTable";
             // 
             // dataColumn8
             // 
-            this.dataColumn8.ColumnName = "Optimist";
+            this.dataColumn8.ColumnName = "列1";
             this.dataColumn8.DataType = typeof(System.TimeSpan);
+            // 
+            // dataColumn1
+            // 
+            this.dataColumn1.ColumnName = "列2";
+            // 
+            // dataColumn2
+            // 
+            this.dataColumn2.ColumnName = "列3";
+            // 
+            // dataColumn3
+            // 
+            this.dataColumn3.ColumnName = "列4";
             // 
             // groupBox1
             // 
@@ -281,15 +215,11 @@
             this.editTableRecordGridView.AutoGenerateColumns = false;
             this.editTableRecordGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.editTableRecordGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.empolyeeIDDataGridViewTextBoxColumn1,
-            this.nameDataGridViewTextBoxColumn1,
-            this.sexDataGridViewTextBoxColumn1,
-            this.ageDataGridViewTextBoxColumn1,
-            this.departmentIDDataGridViewTextBoxColumn1,
-            this.lastUpdateDataGridViewTextBoxColumn,
-            this.lastUpdateUserDataGridViewTextBoxColumn,
-            this.optimistDataGridViewTextBoxColumn});
-            this.editTableRecordGridView.DataMember = "Empolyee";
+            this.列1DataGridViewTextBoxColumn1,
+            this.列2DataGridViewTextBoxColumn1,
+            this.列3DataGridViewTextBoxColumn1,
+            this.列4DataGridViewTextBoxColumn1});
+            this.editTableRecordGridView.DataMember = "SampleTable";
             this.editTableRecordGridView.DataSource = this.sampleDataSet;
             this.editTableRecordGridView.Location = new System.Drawing.Point(198, 164);
             this.editTableRecordGridView.Name = "editTableRecordGridView";
@@ -298,93 +228,73 @@
             this.editTableRecordGridView.Size = new System.Drawing.Size(620, 234);
             this.editTableRecordGridView.TabIndex = 2;
             // 
-            // empolyeeIDDataGridViewTextBoxColumn1
+            // 列1DataGridViewTextBoxColumn1
             // 
-            this.empolyeeIDDataGridViewTextBoxColumn1.DataPropertyName = "EmpolyeeID";
-            this.empolyeeIDDataGridViewTextBoxColumn1.HeaderText = "EmpolyeeID";
-            this.empolyeeIDDataGridViewTextBoxColumn1.Name = "empolyeeIDDataGridViewTextBoxColumn1";
+            this.列1DataGridViewTextBoxColumn1.DataPropertyName = "列1";
+            this.列1DataGridViewTextBoxColumn1.HeaderText = "列1";
+            this.列1DataGridViewTextBoxColumn1.Name = "列1DataGridViewTextBoxColumn1";
             // 
-            // nameDataGridViewTextBoxColumn1
+            // 列2DataGridViewTextBoxColumn1
             // 
-            this.nameDataGridViewTextBoxColumn1.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn1.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn1.Name = "nameDataGridViewTextBoxColumn1";
+            this.列2DataGridViewTextBoxColumn1.DataPropertyName = "列2";
+            this.列2DataGridViewTextBoxColumn1.HeaderText = "列2";
+            this.列2DataGridViewTextBoxColumn1.Name = "列2DataGridViewTextBoxColumn1";
             // 
-            // sexDataGridViewTextBoxColumn1
+            // 列3DataGridViewTextBoxColumn1
             // 
-            this.sexDataGridViewTextBoxColumn1.DataPropertyName = "Sex";
-            this.sexDataGridViewTextBoxColumn1.HeaderText = "Sex";
-            this.sexDataGridViewTextBoxColumn1.Name = "sexDataGridViewTextBoxColumn1";
+            this.列3DataGridViewTextBoxColumn1.DataPropertyName = "列3";
+            this.列3DataGridViewTextBoxColumn1.HeaderText = "列3";
+            this.列3DataGridViewTextBoxColumn1.Name = "列3DataGridViewTextBoxColumn1";
             // 
-            // ageDataGridViewTextBoxColumn1
+            // 列4DataGridViewTextBoxColumn1
             // 
-            this.ageDataGridViewTextBoxColumn1.DataPropertyName = "Age";
-            this.ageDataGridViewTextBoxColumn1.HeaderText = "Age";
-            this.ageDataGridViewTextBoxColumn1.Name = "ageDataGridViewTextBoxColumn1";
+            this.列4DataGridViewTextBoxColumn1.DataPropertyName = "列4";
+            this.列4DataGridViewTextBoxColumn1.HeaderText = "列4";
+            this.列4DataGridViewTextBoxColumn1.Name = "列4DataGridViewTextBoxColumn1";
             // 
-            // departmentIDDataGridViewTextBoxColumn1
+            // commitDB
             // 
-            this.departmentIDDataGridViewTextBoxColumn1.DataPropertyName = "DepartmentID";
-            this.departmentIDDataGridViewTextBoxColumn1.HeaderText = "DepartmentID";
-            this.departmentIDDataGridViewTextBoxColumn1.Name = "departmentIDDataGridViewTextBoxColumn1";
+            this.commitDB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.commitDB.Location = new System.Drawing.Point(721, 404);
+            this.commitDB.Name = "commitDB";
+            this.commitDB.Size = new System.Drawing.Size(97, 34);
+            this.commitDB.TabIndex = 4;
+            this.commitDB.Text = "DB更新";
+            this.commitDB.UseVisualStyleBackColor = true;
+            this.commitDB.Click += new System.EventHandler(this.CommitDB_Click);
             // 
-            // lastUpdateDataGridViewTextBoxColumn
+            // createRowButton
             // 
-            this.lastUpdateDataGridViewTextBoxColumn.DataPropertyName = "LastUpdate";
-            this.lastUpdateDataGridViewTextBoxColumn.HeaderText = "LastUpdate";
-            this.lastUpdateDataGridViewTextBoxColumn.Name = "lastUpdateDataGridViewTextBoxColumn";
+            this.createRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.createRowButton.Location = new System.Drawing.Point(198, 404);
+            this.createRowButton.Name = "createRowButton";
+            this.createRowButton.Size = new System.Drawing.Size(97, 34);
+            this.createRowButton.TabIndex = 4;
+            this.createRowButton.Text = "行追加";
+            this.createRowButton.UseVisualStyleBackColor = true;
+            this.createRowButton.Click += new System.EventHandler(this.CreateRowButton_Click);
             // 
-            // lastUpdateUserDataGridViewTextBoxColumn
+            // deleteRowButton
             // 
-            this.lastUpdateUserDataGridViewTextBoxColumn.DataPropertyName = "LastUpdateUser";
-            this.lastUpdateUserDataGridViewTextBoxColumn.HeaderText = "LastUpdateUser";
-            this.lastUpdateUserDataGridViewTextBoxColumn.Name = "lastUpdateUserDataGridViewTextBoxColumn";
+            this.deleteRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.deleteRowButton.Location = new System.Drawing.Point(301, 404);
+            this.deleteRowButton.Name = "deleteRowButton";
+            this.deleteRowButton.Size = new System.Drawing.Size(97, 34);
+            this.deleteRowButton.TabIndex = 4;
+            this.deleteRowButton.Text = "行削除";
+            this.deleteRowButton.UseVisualStyleBackColor = true;
+            this.deleteRowButton.Click += new System.EventHandler(this.DeleteRowButton_Click);
             // 
-            // optimistDataGridViewTextBoxColumn
+            // searchButton
             // 
-            this.optimistDataGridViewTextBoxColumn.DataPropertyName = "Optimist";
-            this.optimistDataGridViewTextBoxColumn.HeaderText = "Optimist";
-            this.optimistDataGridViewTextBoxColumn.Name = "optimistDataGridViewTextBoxColumn";
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(721, 404);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 34);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "DB更新";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.Location = new System.Drawing.Point(198, 404);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(97, 34);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "行追加";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.Location = new System.Drawing.Point(301, 404);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(97, 34);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "行削除";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(721, 122);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(97, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "検索";
-            this.button4.UseVisualStyleBackColor = true;
+            this.searchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchButton.Location = new System.Drawing.Point(721, 122);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(97, 23);
+            this.searchButton.TabIndex = 4;
+            this.searchButton.Text = "検索";
+            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.SearchButton_Click);
             // 
             // TableRecordEditorForm
             // 
@@ -392,10 +302,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.ClientSize = new System.Drawing.Size(836, 450);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.deleteRowButton);
+            this.Controls.Add(this.createRowButton);
+            this.Controls.Add(this.searchButton);
+            this.Controls.Add(this.commitDB);
             this.Controls.Add(this.editTableRecordGridView);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
@@ -424,36 +334,24 @@
         private System.Windows.Forms.DataGridView searchConditionGridView;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView editTableRecordGridView;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button commitDB;
+        private System.Windows.Forms.Button createRowButton;
+        private System.Windows.Forms.Button deleteRowButton;
         private System.Data.DataSet sampleDataSet;
         private System.Data.DataTable dataTable1;
+        private System.Data.DataColumn dataColumn8;
+        private System.Windows.Forms.Button searchButton;
         private System.Data.DataColumn dataColumn1;
         private System.Data.DataColumn dataColumn2;
         private System.Data.DataColumn dataColumn3;
-        private System.Data.DataColumn dataColumn4;
-        private System.Data.DataColumn dataColumn5;
-        private System.Data.DataColumn dataColumn6;
-        private System.Data.DataColumn dataColumn7;
-        private System.Data.DataColumn dataColumn8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn empolyeeIDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sexDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ageDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn departmentIDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastUpdateDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastUpdateUserDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn optimistDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn empolyeeIDDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sexDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ageDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn departmentIDDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastUpdateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn lastUpdateUserDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn optimistDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 列1DataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 列2DataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 列3DataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 列4DataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 列1DataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 列2DataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 列3DataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn 列4DataGridViewTextBoxColumn1;
     }
 }
 

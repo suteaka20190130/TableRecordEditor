@@ -10,10 +10,11 @@ namespace TableRecordEditor
 {
     class DBAccessManger
     {
-        const string SYS_TBL = "sys.object";
-        const string SYS_COL = "sys.columns";
-
-        const string SQL_GET_TBL =
+        #region 使用SQL
+        /// <summary>
+        /// テーブル一覧取得
+        /// </summary>
+        const string SQL_SELECT_TBL =
 @"
 SELECT sch.name +'.'+ tbl.name AS objectName 
   FROM sys.tables tbl 
@@ -22,17 +23,39 @@ SELECT sch.name +'.'+ tbl.name AS objectName
  WHERE tbl.is_ms_shipped = 0
 ";
 
-        const string SQL_GET_COL = "";
+        /// <summary>
+        /// テーブルのカラム一覧取得
+        /// </summary>
+        const string SQL_SELECT_COLUMNS =
+@"
+SELECT name, column_id, system_type_id, user_type_id
+FROM   sys.columns
+WHERE  object_id = 
+(SELECT object_id 
+   FROM sys.objects 
+  WHERE schema_id = SCHEMA_ID(@schema_name) 
+    AND object_id = OBJECT_ID(@table_name)
+)
+";
+        #endregion
 
-        SqlConnection sqlConn;
-        SqlCommand sqlCmd;
+        public SqlConnection sqlConn;
+        public SqlCommand sqlCmd;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="sqlConnStr"></param>
         public DBAccessManger(string sqlConnStr)
         {
             sqlConn = new SqlConnection(sqlConnStr);
             sqlCmd = sqlConn.CreateCommand();
         }
 
+        /// <summary>
+        /// DBが接続可能であるか確認する
+        /// </summary>
+        /// <returns></returns>
         public bool CanOpen()
         {
             try
@@ -47,18 +70,185 @@ SELECT sch.name +'.'+ tbl.name AS objectName
             }
         }
 
+        /// <summary>
+        /// 接続先DBからテーブル一覧を取得する
+        /// </summary>
+        /// <returns></returns>
         public string[] GetTableList()
         {
-            sqlCmd.CommandText = SQL_GET_TBL;
+            // SQL設定
+            sqlCmd.CommandText = SQL_SELECT_TBL;
+
+            // DataTableにSELECT結果を格納
+            DataTable dt = new DataTable();
+            SqlDataAdapter sqlAdapter = new SqlDataAdapter(sqlCmd);
+            sqlAdapter.Fill(dt);
+
+            // テーブル名のみを取り出す
+            var obj = from row in dt.AsEnumerable() select row.Field<string>("objectName");
+
+            return obj.ToArray();
+        }
+
+        /// <summary>
+        /// スキーマ.テーブル名からカラム一覧を取得する
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public DataTable GetColumnList(string tableName)
+        {
+            // SQL設定
+            sqlCmd.CommandText = SQL_SELECT_COLUMNS;
+
+            // 使用するパラメータの定義・値を設定
+            sqlCmd.Parameters.Add(new SqlParameter("@schema_name", tableName.Split('.')[0]));
+            sqlCmd.Parameters.Add(new SqlParameter("@table_name", tableName.Split('.')[1]));
 
             SqlDataAdapter sqlAdapter = new SqlDataAdapter(sqlCmd);
             DataTable dt = new DataTable();
 
+            // DataTableにSELECT結果を格納
             sqlAdapter.Fill(dt);
 
-            var obj = from row in dt.AsEnumerable() select row.Field<string>("objectName");
+            // 使用したパラメータ初期化
+            sqlCmd.Parameters.Clear();
 
-            return obj.ToArray();
+            return dt;
+        }
+
+        /// <summary>
+        /// 指定したテーブルと検索条件に該当するDataTableを取得する。
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public DataTable SelectTableRecord(string tableName, DataTable searchConditionDt)
+        {
+            // SQL生成
+            StringBuilder sqlBuilder = new StringBuilder();
+
+            // SELECT句
+            sqlBuilder.Append("SELECT");
+            for (int i = 0; i < searchConditionDt.Columns.Count; i++)
+            {
+                if (i == 0)
+                {
+                    sqlBuilder.AppendFormat(" {0}", searchConditionDt.Columns[i].ColumnName);
+                }
+                else
+                {
+                    sqlBuilder.AppendFormat(", {0}", searchConditionDt.Columns[i].ColumnName);
+                }
+            }
+
+            // FROM句
+            sqlBuilder.AppendFormat(" FROM {0}", tableName);
+
+
+            // WHERE句
+#warning 課題① 検索条件に従ったWHERE句を生成すること
+
+            // SQL設定
+            sqlCmd.CommandText = sqlBuilder.ToString();
+
+            // 使用するパラメータの定義・値を設定
+            //sqlCmd.Parameters.Add(new SqlParameter("@schema_name", tableName.Split('.')[0]));
+
+            SqlDataAdapter sqlAdapter = new SqlDataAdapter(sqlCmd);
+            DataTable dt = new DataTable();
+
+            // DataTableにSELECT結果を格納
+            sqlAdapter.Fill(dt);
+
+            // 使用したパラメータ初期化
+            //sqlCmd.Parameters.Clear();
+
+            return dt;
+        }
+
+
+        /// <summary>
+        /// 登録処理
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="insertRow"></param>
+        /// <returns></returns>
+        public int InsertRecord(string tableName, DataRow insertRow)
+        {
+            // SQL生成(INSERT文)
+            StringBuilder sqlBuilder = new StringBuilder();
+
+
+#warning 課題② 編集グリッドの内容(insertRow)に応じたINSERT文を生成すること
+
+            // SQL設定
+            sqlCmd.CommandText = sqlBuilder.ToString();
+
+            //SQL実行
+            int targetRecordCnt = sqlCmd.ExecuteNonQuery();
+
+            return targetRecordCnt;
+        }
+
+        /// <summary>
+        /// 削除処理
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="deleteRow"></param>
+        /// <returns></returns>
+        public int DeleteRecord(string tableName, DataRow deleteRow)
+        {
+            // SQL生成(DELETE文)
+            StringBuilder sqlBuilder = new StringBuilder();
+
+
+#warning 課題③ 編集グリッドの内容(deleteRow)に応じたDELETE文を生成すること
+
+            // SQL設定
+            sqlCmd.CommandText = sqlBuilder.ToString();
+
+            // SQL実行
+            int targetRecordCnt = sqlCmd.ExecuteNonQuery();
+
+            return targetRecordCnt;
+        }
+
+
+        /// <summary>
+        /// 更新処理
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="updateRow"></param>
+        /// <returns></returns>
+        public int UpdateRecord(string tableName, DataRow updateRow)
+        {
+            // SQL生成(UPDATE文)
+            StringBuilder sqlBuilder = new StringBuilder();
+
+
+#warning 課題③ 編集グリッドの内容(updateRow)に応じたUPDATE文を生成すること
+
+            string setSql = string.Empty;
+            string whereSql = string.Empty;
+
+            // カラム一覧の取得
+            foreach (DataColumn col in updateRow.Table.Columns)
+            {
+                setSql += string.Format("{0}={1}, ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Current]);
+                whereSql += string.Format("{0}={1} AND ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Original]);
+            }
+
+            // 末尾のカンマとANDを除外
+            setSql = setSql.Remove(0, setSql.Length - 2);
+            whereSql = whereSql.Remove(0, setSql.Length - 4);
+            sqlBuilder.AppendFormat("UPDATE {0} SET {1} WHERE {2}", tableName, setSql, whereSql);
+
+            // SQL設定
+            sqlCmd.CommandText = sqlBuilder.ToString();
+
+            // SQL実行
+            int targetRecordCnt = sqlCmd.ExecuteNonQuery();
+
+            return targetRecordCnt;
         }
     }
 }
