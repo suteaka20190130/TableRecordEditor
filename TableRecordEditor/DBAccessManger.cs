@@ -147,8 +147,24 @@ WHERE  object_id =
             // WHERE句
 #warning 課題① 検索条件に従ったWHERE句を生成すること
 
+
+            string setSql = string.Empty;
+            string whereSql = string.Empty;
+            string whereStr = " WHERE ";
+            for (int i = 0; i < searchConditionDt.Columns.Count; i++)
+            {
+                if (searchConditionDt.Rows[0][searchConditionDt.Columns[i].ColumnName].ToString() != "")
+                {
+                    whereStr += string.Format("{0}='{1}'  AND ", searchConditionDt.Columns[i].ColumnName, searchConditionDt.Rows[0][searchConditionDt.Columns[i].ColumnName].ToString());
+                }
+
+            }
+
+            whereSql = whereStr.Remove(whereStr.Length - 4, 4);
             // SQL設定
-            sqlCmd.CommandText = sqlBuilder.ToString();
+            sqlCmd.CommandText = sqlBuilder.ToString() + whereSql.ToString();
+
+
 
             // 使用するパラメータの定義・値を設定
             //sqlCmd.Parameters.Add(new SqlParameter("@schema_name", tableName.Split('.')[0]));
