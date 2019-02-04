@@ -289,7 +289,7 @@ namespace TableRecordEditor
             {
                 dBAccess.sqlConn.Open();
                 // トランザクション開始
-                SqlTransaction tran = dBAccess.sqlConn.BeginTransaction();
+                //SqlTransaction tran = dBAccess.sqlConn.BeginTransaction();
 
                 // 1) 削除処理
                 foreach (DataRow row in editRecordDt.Select(string.Empty, string.Empty, DataViewRowState.Deleted))
@@ -310,7 +310,7 @@ namespace TableRecordEditor
                 }
 
                 // DB反映
-                tran.Commit();
+                //tran.Commit();
             }
             catch (Exception)
             {

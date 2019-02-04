@@ -157,28 +157,32 @@ WHERE  object_id =
                 {
                     whereStr += string.Format("{0}='{1}'  AND ", searchConditionDt.Columns[i].ColumnName, searchConditionDt.Rows[0][searchConditionDt.Columns[i].ColumnName].ToString());
                 }
-
             }
 
-            whereSql = whereStr.Remove(whereStr.Length - 4, 4);
-            // SQL設定
-            sqlCmd.CommandText = sqlBuilder.ToString() + whereSql.ToString();
+            if (whereStr == " WHERE ")
+            {
+                sqlCmd.CommandText = sqlBuilder.ToString();
+                SqlDataAdapter sqlWhereAdapter = new SqlDataAdapter(sqlCmd);
+                DataTable dtw = new DataTable();
+                // DataTableにSELECT結果を格納
+                sqlWhereAdapter.Fill(dtw);
+                return dtw;
+            }
+            else
+            {
+                whereSql = whereStr.Remove(whereStr.Length - 4, 4);
+                // SQL設定
+                sqlCmd.CommandText = sqlBuilder.ToString() + whereSql.ToString();
 
+                SqlDataAdapter sqlAdapter = new SqlDataAdapter(sqlCmd);
+                DataTable dt = new DataTable();
 
+                // DataTableにSELECT結果を格納
+                sqlAdapter.Fill(dt);
 
-            // 使用するパラメータの定義・値を設定
-            //sqlCmd.Parameters.Add(new SqlParameter("@schema_name", tableName.Split('.')[0]));
+                return dt;
+            }
 
-            SqlDataAdapter sqlAdapter = new SqlDataAdapter(sqlCmd);
-            DataTable dt = new DataTable();
-
-            // DataTableにSELECT結果を格納
-            sqlAdapter.Fill(dt);
-
-            // 使用したパラメータ初期化
-            //sqlCmd.Parameters.Clear();
-
-            return dt;
         }
 
 
@@ -196,8 +200,33 @@ WHERE  object_id =
 
 #warning 課題② 編集グリッドの内容(insertRow)に応じたINSERT文を生成すること
 
+
+            string insertStr = "";
+            int count = 0;
+            sqlCmd.CommandText = "insert into " + tableName + " VALUES(";
+            List<string> insertList = new List<string>();
+            foreach (var item in insertRow.ItemArray)
+            {
+
+                insertList.Add(insertRow.ItemArray[count].ToString());
+                count++;
+            }
+            insertList.RemoveAt(insertList.Count() - 1);
+            foreach (var item in insertList)
+            {
+                if (item != "")
+                {
+                    sqlCmd.CommandText += string.Format(string.Join("And", item));
+                    sqlCmd.CommandText += ",";
+                }
+
+            }
+            sqlCmd.CommandText = sqlCmd.CommandText.TrimEnd(',') + ")";
+
+
             // SQL設定
-            sqlCmd.CommandText = sqlBuilder.ToString();
+            //sqlCmd.CommandText = sqlBuilder.ToString();
+
 
             //SQL実行
             int targetRecordCnt = sqlCmd.ExecuteNonQuery();
@@ -219,8 +248,12 @@ WHERE  object_id =
 
 #warning 課題③ 編集グリッドの内容(deleteRow)に応じたDELETE文を生成すること
 
+
+
+
+
             // SQL設定
-            sqlCmd.CommandText = sqlBuilder.ToString();
+            //sqlCmd.CommandText = sqlBuilder.ToString();
 
             // SQL実行
             int targetRecordCnt = sqlCmd.ExecuteNonQuery();
