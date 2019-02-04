@@ -29,6 +29,17 @@ namespace TableRecordEditor
         }
 
         /// <summary>
+        /// 処理レベル
+        /// </summary>
+        enum TargetLevel
+        {
+            connectDB,
+            selectTable,
+            searchCondition,
+            editTableRecord
+        }
+
+        /// <summary>
         /// Form_Load
         /// </summary>
         /// <param name="sender"></param>
@@ -50,16 +61,6 @@ namespace TableRecordEditor
             }
         }
 
-        /// <summary>
-        /// 処理レベル
-        /// </summary>
-        enum TargetLevel
-        {
-            connectDB,
-            selectTable,
-            searchCondition,
-            editTableRecord
-        }
 
         /// <summary>
         /// 各コントロールの初期化処理
@@ -129,7 +130,7 @@ namespace TableRecordEditor
             InitializeForm(TargetLevel.selectTable);
 
             string connStr = ConfigurationManager.ConnectionStrings[dbName].ConnectionString;
-            dBAccess = new DBAccessManger(connStr);
+            dBAccess = new DBAccessManger(connStr, textBox1);
 
             if (dBAccess.CanOpen())
             {
@@ -191,11 +192,22 @@ namespace TableRecordEditor
             InitializeForm(TargetLevel.editTableRecord);
 
             DataTable searchConditionDt = searchConditionGridView.DataSource as DataTable;
-            DataTable dt = dBAccess.SelectTableRecord(SelectedTable, searchConditionDt);
 
-            // 値入力用の1行追加
-            editTableRecordGridView.AutoGenerateColumns = true;
-            editTableRecordGridView.DataSource = dt;
+            try
+            {
+
+                DataTable dt = dBAccess.SelectTableRecord(SelectedTable, searchConditionDt);
+
+                // 値入力用の1行追加
+                editTableRecordGridView.AutoGenerateColumns = true;
+                editTableRecordGridView.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                textBox1.Text += string.Format("\r\n//_/_/__/_/__/_/__/_/__/_/__/_/__/_/__/_/__/_/_//\r\n");
+                textBox1.Text += string.Format("例外発生】\r\n{0}\r\n{1}\r\n{2}", ex.Message, ex.Source, ex.StackTrace);
+                textBox1.Text += string.Format("\r\n//_/_/__/_/__/_/__/_/__/_/__/_/__/_/__/_/__/_/_//\r\n");
+            }
         }
 
         /// <summary>
@@ -205,25 +217,21 @@ namespace TableRecordEditor
         /// <returns></returns>
         private bool CanExecute(TargetLevel lv)
         {
+            bool retCd = true;
             switch (lv)
             {
-                case TargetLevel.connectDB:
-                    return true;
-
-                case TargetLevel.selectTable:
-                    return true;
-
+                //case TargetLevel.connectDB:
+                //break;
+                //case TargetLevel.selectTable:
+                //break;
                 case TargetLevel.searchCondition:
                     if (string.IsNullOrEmpty(SelectedDB)
                      || string.IsNullOrEmpty(SelectedTable)
                      || searchConditionGridView.DataSource == null)
                     {
-                        return false;
+                        retCd = false;
                     }
-                    else
-                    {
-                        return true;
-                    }
+                    break;
 
                 case TargetLevel.editTableRecord:
                     if (string.IsNullOrEmpty(SelectedDB)
@@ -231,15 +239,11 @@ namespace TableRecordEditor
                      || searchConditionGridView.DataSource == null
                      || editTableRecordGridView.DataSource == null)
                     {
-                        return false;
+                        retCd = false;
                     }
-                    else
-                    {
-                        return true;
-                    }
-                default:
-                    return true;
+                    break;
             }
+            return retCd;
         }
 
         /// <summary>
@@ -287,9 +291,8 @@ namespace TableRecordEditor
             // DB更新処理
             try
             {
-                dBAccess.sqlConn.Open();
                 // トランザクション開始
-                //SqlTransaction tran = dBAccess.sqlConn.BeginTransaction();
+                dBAccess.BeginTransaction();
 
                 // 1) 削除処理
                 foreach (DataRow row in editRecordDt.Select(string.Empty, string.Empty, DataViewRowState.Deleted))
@@ -309,13 +312,25 @@ namespace TableRecordEditor
                     dBAccess.InsertRecord(SelectedTable, row);
                 }
 
-                // DB反映
-                //tran.Commit();
+                // Commit
+                dBAccess.CommitTransaction();
+                // 編集グリッドのDataTableの変更状況をリセット
+                editRecordDt.AcceptChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                textBox1.Text += string.Format("\r\n//_/_/__/_/__/_/__/_/__/_/__/_/__/_/__/_/__/_/_//\r\n");
+                textBox1.Text += string.Format("例外発生】\r\n{0}\r\n{1}\r\n{2}", ex.Message, ex.Source, ex.StackTrace);
+                textBox1.Text += string.Format("\r\n//_/_/__/_/__/_/__/_/__/_/__/_/__/_/__/_/__/_/_//\r\n");
+
+                // Rollback
+                dBAccess.RollBackTransaction();
             }
+            // CommitTransaction, RollBackTransaction内でCloseするため不要
+            //finally
+            //{
+            //    dBAccess.sqlConn.Close();
+            //}
 
         }
     }

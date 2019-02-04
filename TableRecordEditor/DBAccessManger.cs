@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
+using System.Windows.Forms;
 
 namespace TableRecordEditor
 {
@@ -36,20 +37,23 @@ WHERE  object_id =
   WHERE schema_id = SCHEMA_ID(@schema_name) 
     AND object_id = OBJECT_ID(@table_name)
 )
+AND system_type_id <> 189
 ";
         #endregion
 
         public SqlConnection sqlConn;
         public SqlCommand sqlCmd;
+        public TextBox debugTextBox;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="sqlConnStr"></param>
-        public DBAccessManger(string sqlConnStr)
+        public DBAccessManger(string sqlConnStr, TextBox textBox)
         {
             sqlConn = new SqlConnection(sqlConnStr);
             sqlCmd = sqlConn.CreateCommand();
+            debugTextBox = textBox;
         }
 
         /// <summary>
@@ -68,6 +72,25 @@ WHERE  object_id =
             {
                 return false;
             }
+        }
+
+        public void BeginTransaction()
+        {
+            sqlConn.Open();
+            SqlTransaction tran = sqlConn.BeginTransaction();
+            sqlCmd.Transaction = tran;
+        }
+
+        public void CommitTransaction()
+        {
+            sqlCmd.Transaction.Commit();
+            sqlConn.Close();
+        }
+
+        public void RollBackTransaction()
+        {
+            sqlCmd.Transaction.Rollback();
+            sqlConn.Close();
         }
 
         /// <summary>
@@ -108,6 +131,7 @@ WHERE  object_id =
             DataTable dt = new DataTable();
 
             // DataTableにSELECT結果を格納
+            debugTextBox.Text = sqlCmd.CommandText;
             sqlAdapter.Fill(dt);
 
             // 使用したパラメータ初期化
@@ -162,8 +186,11 @@ WHERE  object_id =
             if (whereStr == " WHERE ")
             {
                 sqlCmd.CommandText = sqlBuilder.ToString();
+                debugTextBox.Text = sqlCmd.CommandText;
+
                 SqlDataAdapter sqlWhereAdapter = new SqlDataAdapter(sqlCmd);
                 DataTable dtw = new DataTable();
+
                 // DataTableにSELECT結果を格納
                 sqlWhereAdapter.Fill(dtw);
                 return dtw;
@@ -173,6 +200,7 @@ WHERE  object_id =
                 whereSql = whereStr.Remove(whereStr.Length - 4, 4);
                 // SQL設定
                 sqlCmd.CommandText = sqlBuilder.ToString() + whereSql.ToString();
+                debugTextBox.Text = sqlCmd.CommandText;
 
                 SqlDataAdapter sqlAdapter = new SqlDataAdapter(sqlCmd);
                 DataTable dt = new DataTable();
@@ -229,6 +257,7 @@ WHERE  object_id =
 
 
             //SQL実行
+            debugTextBox.Text = sqlCmd.CommandText;
             int targetRecordCnt = sqlCmd.ExecuteNonQuery();
 
             return targetRecordCnt;
@@ -256,6 +285,7 @@ WHERE  object_id =
             //sqlCmd.CommandText = sqlBuilder.ToString();
 
             // SQL実行
+            debugTextBox.Text = sqlCmd.CommandText;
             int targetRecordCnt = sqlCmd.ExecuteNonQuery();
 
             return targetRecordCnt;
@@ -295,6 +325,7 @@ WHERE  object_id =
             sqlCmd.CommandText = sqlBuilder.ToString();
 
             // SQL実行
+            debugTextBox.Text = sqlCmd.CommandText;
             int targetRecordCnt = sqlCmd.ExecuteNonQuery();
 
             return targetRecordCnt;

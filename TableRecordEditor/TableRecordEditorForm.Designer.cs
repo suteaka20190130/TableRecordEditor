@@ -53,6 +53,8 @@
             this.createRowButton = new System.Windows.Forms.Button();
             this.deleteRowButton = new System.Windows.Forms.Button();
             this.searchButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.searchConditionGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sampleDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataTable1)).BeginInit();
@@ -108,7 +110,7 @@
             this.selectTableList.Location = new System.Drawing.Point(12, 137);
             this.selectTableList.Name = "selectTableList";
             this.selectTableList.ScrollAlwaysVisible = true;
-            this.selectTableList.Size = new System.Drawing.Size(174, 302);
+            this.selectTableList.Size = new System.Drawing.Size(174, 278);
             this.selectTableList.TabIndex = 0;
             this.selectTableList.SelectedIndexChanged += new System.EventHandler(this.SelectTableList_SelectedIndexChanged);
             // 
@@ -225,7 +227,7 @@
             this.editTableRecordGridView.Name = "editTableRecordGridView";
             this.editTableRecordGridView.RowTemplate.Height = 21;
             this.editTableRecordGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.editTableRecordGridView.Size = new System.Drawing.Size(620, 234);
+            this.editTableRecordGridView.Size = new System.Drawing.Size(620, 206);
             this.editTableRecordGridView.TabIndex = 2;
             // 
             // 列1DataGridViewTextBoxColumn1
@@ -255,7 +257,7 @@
             // commitDB
             // 
             this.commitDB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.commitDB.Location = new System.Drawing.Point(721, 404);
+            this.commitDB.Location = new System.Drawing.Point(721, 381);
             this.commitDB.Name = "commitDB";
             this.commitDB.Size = new System.Drawing.Size(97, 34);
             this.commitDB.TabIndex = 4;
@@ -266,7 +268,7 @@
             // createRowButton
             // 
             this.createRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.createRowButton.Location = new System.Drawing.Point(198, 404);
+            this.createRowButton.Location = new System.Drawing.Point(198, 381);
             this.createRowButton.Name = "createRowButton";
             this.createRowButton.Size = new System.Drawing.Size(97, 34);
             this.createRowButton.TabIndex = 4;
@@ -277,7 +279,7 @@
             // deleteRowButton
             // 
             this.deleteRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.deleteRowButton.Location = new System.Drawing.Point(301, 404);
+            this.deleteRowButton.Location = new System.Drawing.Point(301, 381);
             this.deleteRowButton.Name = "deleteRowButton";
             this.deleteRowButton.Size = new System.Drawing.Size(97, 34);
             this.deleteRowButton.TabIndex = 4;
@@ -287,8 +289,8 @@
             // 
             // searchButton
             // 
-            this.searchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.searchButton.Location = new System.Drawing.Point(721, 122);
+            this.searchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchButton.Location = new System.Drawing.Point(721, 123);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(97, 23);
             this.searchButton.TabIndex = 4;
@@ -296,18 +298,39 @@
             this.searchButton.UseVisualStyleBackColor = true;
             this.searchButton.Click += new System.EventHandler(this.SearchButton_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(10, 433);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "実行結果";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(12, 449);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox1.Size = new System.Drawing.Size(806, 65);
+            this.textBox1.TabIndex = 5;
+            // 
             // TableRecordEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.ClientSize = new System.Drawing.Size(836, 450);
+            this.ClientSize = new System.Drawing.Size(836, 537);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.deleteRowButton);
             this.Controls.Add(this.createRowButton);
             this.Controls.Add(this.searchButton);
             this.Controls.Add(this.commitDB);
             this.Controls.Add(this.editTableRecordGridView);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.selectTableList);
@@ -352,6 +375,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn 列2DataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn 列3DataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn 列4DataGridViewTextBoxColumn1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
