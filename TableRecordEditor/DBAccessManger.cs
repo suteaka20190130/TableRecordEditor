@@ -303,12 +303,46 @@ AND system_type_id <> 189
 
 #warning 課題③ 編集グリッドの内容(deleteRow)に応じたDELETE文を生成すること
 
+            string deleteStr = "DELETE " + tableName + " WHERE ";
+            string deleteSql = "";
+            List<DataRow> deleteList = new List<DataRow>();
+            for (int i = 0; i < deleteRow.Table.Columns.Count; i++)
+            {
+                if (i == 3)
+                {
+                    deleteSql += deleteRow.Table.Columns[i] + "='" + deleteRow[i, DataRowVersion.Original] + "' and ";
+                }
+                else if ((i == 5 || i == 6 || i == 8))
+                {
+                    deleteSql += deleteRow.Table.Columns[i] + "='" + deleteRow[i, DataRowVersion.Original] + "' and ";
+                }
+                else if (i == 7)
+                {
+                    deleteSql += deleteRow.Table.Columns[i] + "='" + deleteRow[i, DataRowVersion.Original] + "' and ";
+                }
+                else if (i == 4 || i == 9)
+                {
+                    var check= deleteRow[i, DataRowVersion.Original];
+                    if (check.Equals(true))
+                    {
+                        deleteSql += deleteRow.Table.Columns[i] + "=1 and ";
+                    }
+                    else
+                    {
+                        deleteSql += deleteRow.Table.Columns[i] + "=0, and ";
+                    }
 
+                }
+                else
+                {
+                    deleteSql += deleteRow.Table.Columns[i] + "=" + deleteRow[i, DataRowVersion.Original] + " and ";
+                }
+            }
 
-
-
+            int mojisu = deleteSql.Length;
+            string trimDeleteSql = deleteSql.Substring(0, mojisu-4);
             // SQL設定
-            //sqlCmd.CommandText = sqlBuilder.ToString();
+            sqlCmd.CommandText =deleteStr+= trimDeleteSql;
 
             // SQL実行
             debugTextBox.Text = sqlCmd.CommandText;
