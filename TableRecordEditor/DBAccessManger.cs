@@ -228,54 +228,60 @@ AND system_type_id <> 189
 
 #warning 課題② 編集グリッドの内容(insertRow)に応じたINSERT文を生成すること
 
-
-            string insertStr = "";
+            sqlCmd.CommandText = "";
+            string insertStr = "insert into " + tableName + " (";
+            string values = " VALUES(";
             int count = 0;
-            sqlCmd.CommandText = "insert into " + tableName + (" (question_Id,answer_id,answer,answer_data,correct_answer,registed_start_at,registed_end_at,editor,edited_at,automatic_answer)" + " VALUES(");
 
+            foreach (var item in insertRow.Table.Columns)
+            {
+                insertStr += item + ",";
+            }
+            insertStr = insertStr.TrimEnd(',');
+            insertStr += ")";
             List<string> insertList = new List<string>();
             foreach (var item in insertRow.ItemArray)
             {
-
                 insertList.Add(insertRow.ItemArray[count].ToString());
                 count++;
             }
             //insertList.RemoveAt(insertList.Count() - 1);
             int a = 1;
-            foreach (var item in insertList)
+            if (tableName == "dbo.answers")
             {
-                if (item != "")
+                foreach (var item in insertList)
                 {
-                    if (a == 4)
+                    if (item != "")
                     {
-                        sqlCmd.CommandText += "'" + item + "',";
+                        if (item == "True")
+                        {
+                            sqlCmd.CommandText += "1,";
+                        }
+                        else if (item == "false")
+                        {
+                            sqlCmd.CommandText += "0,";
+                        }
+                        else
+                        {
+                            sqlCmd.CommandText += "'" + item + "',";
+                        }
                     }
-                    else if (a == 6 || a == 7 || a == 9)
-                    {
-                        sqlCmd.CommandText += "'" + item + "',";
-                    }
-                    else if (a == 8)
-                    {
-                        sqlCmd.CommandText += "'" + item + "',";
-                    }
-                    else if (item == "True")
-                    {
-                        sqlCmd.CommandText += "1,";
-                    }
-                    else if (item == "false")
-                    {
-                        sqlCmd.CommandText += "0,";
-                    }
-                    else
-                    {
-                        sqlCmd.CommandText += item;
-                        sqlCmd.CommandText += ",";
-                    }
-
+                    a++;
                 }
-                a++;
             }
-            sqlCmd.CommandText = sqlCmd.CommandText.TrimEnd(',') + ")";
+            else
+            {
+                foreach (var item in insertList)
+                {
+                    if (item != "")
+                    {
+                        sqlCmd.CommandText += "'" + item + "',";
+                    }
+                    a++;
+                }
+            }
+
+            sqlCmd.CommandText = insertStr + values + sqlCmd.CommandText.TrimEnd(',') + ")";
 
 
             // SQL設定
@@ -302,47 +308,43 @@ AND system_type_id <> 189
 
 
 #warning 課題③ 編集グリッドの内容(deleteRow)に応じたDELETE文を生成すること
+            string deleteStr = "";
 
-            string deleteStr = "DELETE " + tableName + " WHERE ";
+            deleteStr = "DELETE " + tableName + " WHERE ";
+
             string deleteSql = "";
             List<DataRow> deleteList = new List<DataRow>();
-            for (int i = 0; i < deleteRow.Table.Columns.Count; i++)
+            if (tableName == "dbo.answers")
             {
-                if (i == 3)
+                for (int i = 0; i < deleteRow.Table.Columns.Count; i++)
                 {
-                    deleteSql += deleteRow.Table.Columns[i] + "='" + deleteRow[i, DataRowVersion.Original] + "' and ";
-                }
-                else if ((i == 5 || i == 6 || i == 8))
-                {
-                    deleteSql += deleteRow.Table.Columns[i] + "='" + deleteRow[i, DataRowVersion.Original] + "' and ";
-                }
-                else if (i == 7)
-                {
-                    deleteSql += deleteRow.Table.Columns[i] + "='" + deleteRow[i, DataRowVersion.Original] + "' and ";
-                }
-                else if (i == 4 || i == 9)
-                {
-                    var check= deleteRow[i, DataRowVersion.Original];
-                    if (check.Equals(true))
+                    if (i == 0)
                     {
-                        deleteSql += deleteRow.Table.Columns[i] + "=1 and ";
-                    }
-                    else
-                    {
-                        deleteSql += deleteRow.Table.Columns[i] + "=0, and ";
-                    }
+                        deleteSql += deleteRow.Table.Columns[i] + "=" + deleteRow[i, DataRowVersion.Original] + " and ";
 
+                    }
+                    else if (i == 1)
+                    {
+                        deleteSql += deleteRow.Table.Columns[i] + "='" + deleteRow[i, DataRowVersion.Original] + "' and ";
+                    }
                 }
-                else
+            }
+            else
+            {
+                for (int i = 0; i < deleteRow.Table.Columns.Count; i++)
                 {
-                    deleteSql += deleteRow.Table.Columns[i] + "=" + deleteRow[i, DataRowVersion.Original] + " and ";
+                    if (i == 0)
+                    {
+                        deleteSql += deleteRow.Table.Columns[i] + "=" + deleteRow[i, DataRowVersion.Original] + " and ";
+
+                    }
                 }
             }
 
             int mojisu = deleteSql.Length;
-            string trimDeleteSql = deleteSql.Substring(0, mojisu-4);
+            string trimDeleteSql = deleteSql.Substring(0, mojisu - 4);
             // SQL設定
-            sqlCmd.CommandText =deleteStr+= trimDeleteSql;
+            sqlCmd.CommandText = deleteStr += trimDeleteSql;
 
             // SQL実行
             debugTextBox.Text = sqlCmd.CommandText;
@@ -372,6 +374,7 @@ AND system_type_id <> 189
             // カラム一覧の取得
             foreach (DataColumn col in updateRow.Table.Columns)
             {
+
                 setSql += string.Format("{0}='{1}', ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Current]);
                 whereSql += string.Format("{0}='{1}' AND ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Original]);
             }
