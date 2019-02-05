@@ -231,7 +231,8 @@ AND system_type_id <> 189
 
             string insertStr = "";
             int count = 0;
-            sqlCmd.CommandText = "insert into " + tableName + " VALUES(";
+            sqlCmd.CommandText = "insert into " + tableName + (" (question_Id,answer_id,answer,answer_data,correct_answer,registed_start_at,registed_end_at,editor,edited_at,automatic_answer)" + " VALUES(");
+
             List<string> insertList = new List<string>();
             foreach (var item in insertRow.ItemArray)
             {
@@ -239,15 +240,40 @@ AND system_type_id <> 189
                 insertList.Add(insertRow.ItemArray[count].ToString());
                 count++;
             }
-            insertList.RemoveAt(insertList.Count() - 1);
+            //insertList.RemoveAt(insertList.Count() - 1);
+            int a = 1;
             foreach (var item in insertList)
             {
                 if (item != "")
                 {
-                    sqlCmd.CommandText += string.Format(string.Join("And", item));
-                    sqlCmd.CommandText += ",";
-                }
+                    if (a == 4)
+                    {
+                        sqlCmd.CommandText += "'" + item + "',";
+                    }
+                    else if (a == 6 || a == 7 || a == 9)
+                    {
+                        sqlCmd.CommandText += "'" + item + "',";
+                    }
+                    else if (a == 8)
+                    {
+                        sqlCmd.CommandText += "'" + item + "',";
+                    }
+                    else if (item == "True")
+                    {
+                        sqlCmd.CommandText += "1,";
+                    }
+                    else if (item == "false")
+                    {
+                        sqlCmd.CommandText += "0,";
+                    }
+                    else
+                    {
+                        sqlCmd.CommandText += item;
+                        sqlCmd.CommandText += ",";
+                    }
 
+                }
+                a++;
             }
             sqlCmd.CommandText = sqlCmd.CommandText.TrimEnd(',') + ")";
 
