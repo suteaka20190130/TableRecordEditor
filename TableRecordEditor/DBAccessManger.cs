@@ -245,7 +245,7 @@ AND system_type_id <> 189
                 insertList.Add(insertRow.ItemArray[count].ToString());
                 count++;
             }
-            //insertList.RemoveAt(insertList.Count() - 1);
+
             int a = 1;
             if (tableName == "dbo.answers")
             {
@@ -282,10 +282,6 @@ AND system_type_id <> 189
             }
 
             sqlCmd.CommandText = insertStr + values + sqlCmd.CommandText.TrimEnd(',') + ")";
-
-
-            // SQL設定
-            //sqlCmd.CommandText = sqlBuilder.ToString();
 
 
             //SQL実行
@@ -371,17 +367,50 @@ AND system_type_id <> 189
             string setSql = string.Empty;
             string whereSql = string.Empty;
 
+            int a = 1;
             // カラム一覧の取得
             foreach (DataColumn col in updateRow.Table.Columns)
             {
+                if (a == 5 && tableName == "dbo.answers" || a == 10 && tableName == "dbo.answers")
+                {
+                    var s = updateRow[col.ColumnName, DataRowVersion.Current];
+                    if (s.Equals(true))
+                    {
 
-                setSql += string.Format("{0}='{1}', ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Current]);
-                whereSql += string.Format("{0}='{1}' AND ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Original]);
+                        setSql += col.ColumnName + "=1,";
+                    }
+                    else
+                    {
+
+                        setSql += col.ColumnName + "=0,";
+                    }
+                }
+                else
+                {
+                    setSql += string.Format("{0}='{1}', ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Current]);
+                }
+
+                if (a == 1 && tableName == "dbo.questions")
+                {
+                    whereSql += string.Format("{0}='{1}'", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Original]);
+                }
+                else if (a == 1 && tableName == "dbo.answers" || a == 2 && tableName == "dbo.answers")
+                {
+                    whereSql += string.Format("{0}='{1}'  AND ", col.ColumnName, updateRow[col.ColumnName, DataRowVersion.Original]);
+                }
+                a++;
             }
-
+            if (tableName == "dbo.answers")
+            {
+                setSql = setSql.Remove(setSql.Length - 1, 1);
+                whereSql = whereSql.Remove(whereSql.Length - 4, 4);
+            }
+            else
+            {
+                setSql = setSql.Remove(setSql.Length - 2, 2);
+            }
             // 末尾のカンマとANDを除外
-            setSql = setSql.Remove(setSql.Length - 2, 2);
-            whereSql = whereSql.Remove(whereSql.Length - 4, 4);
+
             sqlBuilder.AppendFormat("UPDATE {0} SET {1} WHERE {2}", tableName, setSql, whereSql);
 
             // SQL設定
