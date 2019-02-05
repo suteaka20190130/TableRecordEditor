@@ -186,31 +186,23 @@ AND system_type_id <> 189
             if (whereStr == " WHERE ")
             {
                 sqlCmd.CommandText = sqlBuilder.ToString();
-                debugTextBox.Text = sqlCmd.CommandText;
-
-                SqlDataAdapter sqlWhereAdapter = new SqlDataAdapter(sqlCmd);
-                DataTable dtw = new DataTable();
-
-                // DataTableにSELECT結果を格納
-                sqlWhereAdapter.Fill(dtw);
-                return dtw;
             }
             else
             {
                 whereSql = whereStr.Remove(whereStr.Length - 4, 4);
-                // SQL設定
-                sqlCmd.CommandText = sqlBuilder.ToString() + whereSql.ToString();
-                debugTextBox.Text = sqlCmd.CommandText;
 
-                SqlDataAdapter sqlAdapter = new SqlDataAdapter(sqlCmd);
-                DataTable dt = new DataTable();
-
-                // DataTableにSELECT結果を格納
-                sqlAdapter.Fill(dt);
-
-                return dt;
             }
+            // SQL設定  
+            sqlCmd.CommandText = sqlBuilder.ToString() + whereSql.ToString();
+            debugTextBox.Text = sqlCmd.CommandText;
 
+            SqlDataAdapter sqlAdapter = new SqlDataAdapter(sqlCmd);
+            DataTable dt = new DataTable();
+
+            // DataTableにSELECT結果を格納
+            sqlAdapter.Fill(dt);
+
+            return dt;
         }
 
 
@@ -400,6 +392,7 @@ AND system_type_id <> 189
                 }
                 a++;
             }
+            // 末尾のカンマとANDを除外
             if (tableName == "dbo.answers")
             {
                 setSql = setSql.Remove(setSql.Length - 1, 1);
@@ -409,7 +402,7 @@ AND system_type_id <> 189
             {
                 setSql = setSql.Remove(setSql.Length - 2, 2);
             }
-            // 末尾のカンマとANDを除外
+
 
             sqlBuilder.AppendFormat("UPDATE {0} SET {1} WHERE {2}", tableName, setSql, whereSql);
 
