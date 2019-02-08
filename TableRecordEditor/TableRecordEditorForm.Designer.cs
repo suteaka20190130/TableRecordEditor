@@ -226,7 +226,6 @@
             this.editTableRecordGridView.Location = new System.Drawing.Point(198, 164);
             this.editTableRecordGridView.Name = "editTableRecordGridView";
             this.editTableRecordGridView.RowTemplate.Height = 21;
-            this.editTableRecordGridView.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.editTableRecordGridView.Size = new System.Drawing.Size(620, 206);
             this.editTableRecordGridView.TabIndex = 2;
             // 

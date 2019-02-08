@@ -169,7 +169,7 @@ AND system_type_id <> 189
 
 
             // WHERE句
-#warning 課題① 検索条件に従ったWHERE句を生成すること
+
 
 
             string setSql = string.Empty;
@@ -218,7 +218,6 @@ AND system_type_id <> 189
             StringBuilder sqlBuilder = new StringBuilder();
 
 
-#warning 課題② 編集グリッドの内容(insertRow)に応じたINSERT文を生成すること
 
             sqlCmd.CommandText = "";
             string insertStr = "insert into " + tableName + " (";
@@ -295,7 +294,7 @@ AND system_type_id <> 189
             StringBuilder sqlBuilder = new StringBuilder();
 
 
-#warning 課題③ 編集グリッドの内容(deleteRow)に応じたDELETE文を生成すること
+
             string deleteStr = "";
 
             deleteStr = "DELETE " + tableName + " WHERE ";
@@ -354,7 +353,6 @@ AND system_type_id <> 189
             StringBuilder sqlBuilder = new StringBuilder();
 
 
-#warning 課題③ 編集グリッドの内容(updateRow)に応じたUPDATE文を生成すること
 
             string setSql = string.Empty;
             string whereSql = string.Empty;
