@@ -110,7 +110,7 @@
             this.selectTableList.Location = new System.Drawing.Point(12, 137);
             this.selectTableList.Name = "selectTableList";
             this.selectTableList.ScrollAlwaysVisible = true;
-            this.selectTableList.Size = new System.Drawing.Size(174, 278);
+            this.selectTableList.Size = new System.Drawing.Size(174, 302);
             this.selectTableList.TabIndex = 0;
             this.selectTableList.SelectedIndexChanged += new System.EventHandler(this.SelectTableList_SelectedIndexChanged);
             // 
@@ -226,8 +226,11 @@
             this.editTableRecordGridView.Location = new System.Drawing.Point(198, 164);
             this.editTableRecordGridView.Name = "editTableRecordGridView";
             this.editTableRecordGridView.RowTemplate.Height = 21;
-            this.editTableRecordGridView.Size = new System.Drawing.Size(620, 206);
+            this.editTableRecordGridView.Size = new System.Drawing.Size(620, 222);
             this.editTableRecordGridView.TabIndex = 2;
+            this.editTableRecordGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.editTableRecordGridView_DataBindingComplete);
+            this.editTableRecordGridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.editTableRecordGridView_KeyDown);
+            this.editTableRecordGridView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.editTableRecordGridView_KeyUp);
             // 
             // 列1DataGridViewTextBoxColumn1
             // 
@@ -256,7 +259,7 @@
             // commitDB
             // 
             this.commitDB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.commitDB.Location = new System.Drawing.Point(721, 381);
+            this.commitDB.Location = new System.Drawing.Point(721, 405);
             this.commitDB.Name = "commitDB";
             this.commitDB.Size = new System.Drawing.Size(97, 34);
             this.commitDB.TabIndex = 4;
@@ -267,7 +270,7 @@
             // createRowButton
             // 
             this.createRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.createRowButton.Location = new System.Drawing.Point(198, 381);
+            this.createRowButton.Location = new System.Drawing.Point(198, 405);
             this.createRowButton.Name = "createRowButton";
             this.createRowButton.Size = new System.Drawing.Size(97, 34);
             this.createRowButton.TabIndex = 4;
@@ -278,7 +281,7 @@
             // deleteRowButton
             // 
             this.deleteRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.deleteRowButton.Location = new System.Drawing.Point(301, 381);
+            this.deleteRowButton.Location = new System.Drawing.Point(301, 405);
             this.deleteRowButton.Name = "deleteRowButton";
             this.deleteRowButton.Size = new System.Drawing.Size(97, 34);
             this.deleteRowButton.TabIndex = 4;
@@ -299,8 +302,9 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 433);
+            this.label3.Location = new System.Drawing.Point(12, 458);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 2;
@@ -308,12 +312,14 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 449);
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(12, 473);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(806, 65);
+            this.textBox1.Size = new System.Drawing.Size(806, 168);
             this.textBox1.TabIndex = 5;
             // 
             // TableRecordEditorForm
@@ -321,7 +327,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.ClientSize = new System.Drawing.Size(836, 537);
+            this.ClientSize = new System.Drawing.Size(836, 646);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.deleteRowButton);
             this.Controls.Add(this.createRowButton);

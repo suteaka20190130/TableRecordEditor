@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace TableRecordEditor
 {
@@ -19,6 +20,7 @@ namespace TableRecordEditor
 
         public string SelectedDB { get; set; }
         public string SelectedTable { get; set; }
+        private DataTable SchemaDt;
 
         /// <summary>
         /// Constructor
@@ -196,7 +198,7 @@ namespace TableRecordEditor
             try
             {
 
-                DataTable dt = dBAccess.SelectTableRecord(SelectedTable, searchConditionDt);
+                DataTable dt = dBAccess.SelectTableRecord(SelectedTable, searchConditionDt, ref SchemaDt);
 
                 // 値入力用の1行追加
                 editTableRecordGridView.AutoGenerateColumns = true;
@@ -270,8 +272,8 @@ namespace TableRecordEditor
         /// <param name="e"></param>
         private void DeleteRowButton_Click(object sender, EventArgs e)
         {
-            // 編集グリッドが存在すれば処理続行
-            if (!CanExecute(TargetLevel.editTableRecord)) { return; }
+            // 編集グリッド、および選択行が存在すれば処理続行
+            if (!CanExecute(TargetLevel.editTableRecord) || editTableRecordGridView.CurrentRow == null) { return; }
 
             // 選択行を取得して行削除
             int deleteIndex = editTableRecordGridView.CurrentRow.Index;
@@ -288,6 +290,7 @@ namespace TableRecordEditor
             int notModifyRowCnt = editRecordDt.Select(string.Empty, string.Empty, DataViewRowState.Unchanged).Count();
             if (editRecordDt.Rows.Count == notModifyRowCnt) { return; }
 
+            textBox1.Text = String.Empty;
             // DB更新処理
             try
             {
@@ -297,19 +300,19 @@ namespace TableRecordEditor
                 // 1) 削除処理
                 foreach (DataRow row in editRecordDt.Select(string.Empty, string.Empty, DataViewRowState.Deleted))
                 {
-                    dBAccess.DeleteRecord(SelectedTable, row);
+                    dBAccess.DeleteRecord(SelectedTable, row, ref SchemaDt);
                 }
 
                 // 2) 更新処理
                 foreach (DataRow row in editRecordDt.Select(string.Empty, string.Empty, DataViewRowState.ModifiedCurrent))
                 {
-                    dBAccess.UpdateRecord(SelectedTable, row);
+                    dBAccess.UpdateRecord(SelectedTable, row, ref SchemaDt);
                 }
 
                 // 3) 追加処理
                 foreach (DataRow row in editRecordDt.Select(string.Empty, string.Empty, DataViewRowState.Added))
                 {
-                    dBAccess.InsertRecord(SelectedTable, row);
+                    dBAccess.InsertRecord(SelectedTable, row, ref SchemaDt);
                 }
 
                 // Commit
@@ -332,6 +335,107 @@ namespace TableRecordEditor
             //    dBAccess.sqlConn.Close();
             //}
 
+        }
+
+        private void editTableRecordGridView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.V)
+            {
+                List<int> dgvR = new List<int>();
+                List<int> dgvC = new List<int>();
+                // 選択されているセルごとに貼り付け
+                foreach (DataGridViewCell c in editTableRecordGridView.SelectedCells)
+                {
+                    dgvR.Add(c.RowIndex);
+                    dgvC.Add(c.ColumnIndex);
+                }
+                int iRMin = dgvR.Min();
+                int iRMax = editTableRecordGridView.Rows.Count;
+                int iCMin = dgvC.Min();
+                int iCMax = editTableRecordGridView.Columns.Count;
+
+
+                List<List<string>> clipStr = (Clipboard.GetText().Split(new string[] { "\r\n" }, StringSplitOptions.None))
+                                             .Select(l => l.Split(new string[] { "\t" }, StringSplitOptions.None).ToList()).ToList();
+
+                if (clipStr.Count == 1 && clipStr[0].Count == 1)
+                {
+                    foreach (DataGridViewCell c in editTableRecordGridView.SelectedCells)
+                    {
+                        int iR = c.RowIndex;
+                        int iC = c.ColumnIndex;
+
+                        // 選択セルに反映
+                        this.editTableRecordGridView.Rows[iR].Cells[iC].Value = clipStr[0][0];
+                    }
+                }
+                else
+                {
+                    for (int y = 0, iR = iRMin; y < clipStr.Count && iR < iRMax; y++, iR++)
+                    {
+                        for (int x = 0, iC = iCMin; x < clipStr[0].Count && iC < iCMax; x++, iC++)
+                        {
+                            // 選択セルに反映
+                            if (String.IsNullOrEmpty(clipStr[y][x]))
+                            {
+                                this.editTableRecordGridView.Rows[iR].Cells[iC].Value = DBNull.Value;
+                            }
+                            else
+                            {
+                                this.editTableRecordGridView.Rows[iR].Cells[iC].Value = clipStr[y][x];
+                            }
+                        }
+                    }
+                }
+            }
+            else if (e.KeyCode == Keys.Delete)
+            {
+                foreach (DataGridViewCell c in editTableRecordGridView.SelectedCells)
+                {
+                    int iR = c.RowIndex;
+                    int iC = c.ColumnIndex;
+
+                    // 選択セルに反映
+                    this.editTableRecordGridView.Rows[iR].Cells[iC].Value = System.DBNull.Value;
+                }
+            }
+        }
+
+        private void editTableRecordGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (SchemaDt == null)
+            {
+                return;
+            }
+            foreach (DataColumn col in SchemaDt.Columns)
+            {
+                if (col.DataType == typeof(DateTime))
+                {
+                    editTableRecordGridView.Columns[col.ColumnName].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm:ss.fff";
+                }
+            }
+        }
+
+        private void editTableRecordGridView_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                List<List<string>> clipStr = (Clipboard.GetText().Split(new string[] { "\r\n" }, StringSplitOptions.None))
+                             .Select(l => l.Split(new string[] { "\t" }, StringSplitOptions.None).ToList()).ToList();
+
+                // Gridの列数より多い場合、左端の列のデータ(行の枠部分）は削除する
+                if (clipStr[0].Count > editTableRecordGridView.Columns.Count)
+                {
+                    List<string> clipStrRow = Clipboard.GetText().Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+
+                    for (int i = 0; i < clipStrRow.Count; i++)
+                    {
+                        clipStrRow[i] = clipStrRow[i].Substring(1, clipStrRow[i].Length - 1);
+                    }
+
+                    Clipboard.SetText(String.Join("\r\n", clipStrRow));
+                }
+            }
         }
     }
 }
